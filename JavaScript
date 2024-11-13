@@ -1,0 +1,32 @@
+document.getElementById('animal-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const name = document.getElementById('animal-name').value;
+    const description = document.getElementById('animal-description').value;
+    const image = document.getElementById('animal-image').files[0];
+    
+    const reader = new FileReader();
+    reader.onloadend = function () {
+        const animalList = document.getElementById('animal-list');
+        const animalCard = document.createElement('div');
+        animalCard.classList.add('animal-card');
+        
+        const animalImage = document.createElement('img');
+        animalImage.src = reader.result;
+        animalImage.alt = name;
+        animalCard.appendChild(animalImage);
+        
+        const animalName = document.createElement('h2');
+        animalName.textContent = name;
+        animalCard.appendChild(animalName);
+        
+        const animalDescription = document.createElement('p');
+        animalDescription.textContent = description;
+        animalCard.appendChild(animalDescription);
+        
+        animalList.appendChild(animalCard);
+    }
+    
+    if (image) {
+        reader.readAsDataURL(image);
+    }
+});
