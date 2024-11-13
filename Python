@@ -1,0 +1,6 @@
+db_config = {
+    'user': 'root',
+    'password': 'sua_senha',
+    'host': 'localhost',
+    'database': 'PatasPerdidas'
+}
