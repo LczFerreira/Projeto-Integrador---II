@@ -1,0 +1,42 @@
+from flask import Flask, render_template, request, redirect
+import mysql.connector
+from config import db_config
+import base64
+
+app = Flask(__name__)
+
+def get_db_connection():
+    conn = mysql.connector.connect(**db_config)
+    return conn
+
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM AnimaisPerdidos')
+    animais = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('index.html', animais=animais)
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    nome = request.form['animal-name']
+    descricao = request.form['animal-description']
+    imagem = request.files['animal-image'].read()
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('INSERT INTO AnimaisPerdidos (nome, descricao, imagem) VALUES (%s, %s, %s)', (nome, descricao, imagem))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    return redirect('/')
+
+@app.template_filter('b64encode')
+def b64encode_filter(data):
+    return base64.b64encode(data).decode('utf-8')
+
+if __name__ == '__main__':
+    app.run(debug=True)
