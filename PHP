@@ -1,0 +1,26 @@
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "LocalizadorAnimais";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Conexão falhou: " . $conn->connect_error);
+}
+
+$nome = $_POST['animal-name'];
+$descricao = $_POST['animal-description'];
+$imagem = addslashes(file_get_contents($_FILES['animal-image']['tmp_name']));
+
+$sql = "INSERT INTO AnimaisPerdidos (nome, descricao, imagem) VALUES ('$nome', '$descricao', '$imagem')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Novo registro criado com sucesso!";
+} else {
+    echo "Erro: " . $sql . "<br>" . $conn->error;
+}
+
+$conn->close();
+?>
