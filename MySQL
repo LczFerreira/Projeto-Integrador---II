@@ -1,0 +1,9 @@
+CREATE DATABASE LocalizadorAnimais;
+USE LocalizadorAnimais;
+
+CREATE TABLE AnimaisPerdidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT NOT NULL,
+    imagem LONGBLOB NOT NULL
+);
